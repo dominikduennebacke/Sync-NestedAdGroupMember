@@ -24,9 +24,9 @@ There are many applications that do not support nested group membership of users
 ### INSTALLATION
 * Download the script file:
     ```powershell
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dominikduennebacke/Sync-NestedAdGroupMember/main/Sync-NestedAdGroupMember.ps1"
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dominikduennebacke/Sync-NestedAdGroupMember/main/Sync-NestedAdGroupMember.ps1" -OutFile "Sync-NestedAdGroupMember.ps1"
     ```
-* Set up a scheduled task or a CI/CD job that runs the script every 10 minutes
+* Set up a scheduled task or a CI/CD job that runs the script every 5-10 minutes
 
 ### SCALING
 After setting up a few group pairs keep an eye on the execution time of the script which should not be larger than the scheduling interval.
@@ -199,4 +199,4 @@ Returns the name of the nested group, name of the unnested group, SamAccountName
 By default, this cmdlet does not generate any output.
 
 ## LINKS
-* [Blog post on autofocus.duennebacke.com]([./Add-ADPrincipalGroupMembership.md](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/)
+* [Blog post on autofocus.duennebacke.com](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/)
