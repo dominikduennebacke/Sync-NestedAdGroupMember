@@ -14,7 +14,7 @@ The Sync-NestedAdGroupMember.ps1 script syncs members between pairs of groups. A
 During execution the script fetches all AD groups with suffix `-NESTED`, loops thru them and looks for their `-UNNESTED` counterpart. Then all members of the `-NESTED` group are fetched recursively and synced to the `-UNNESTED` group. This means missing members are added and obsolete members are removed. Manual changes to the `-UNNESTED` group are overwritten.
 
 ### USE CASE
-There are many applications that do not support nested group membership of users breaking with many access management models. This script serves as a workaround. The idea is that the `-UNNESTED` group is configured within the application and access is managed entirely in the `-NESTED` group.
+There are many applications that do not support nested group membership of users breaking with common access management models. This script serves as a workaround. The idea is that the `-UNNESTED` group is configured within the application and access is managed entirely in the `-NESTED` group.
 
 ### REQUIREMENTS
 * PowerShell module [ActiveDirectory](https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps)
