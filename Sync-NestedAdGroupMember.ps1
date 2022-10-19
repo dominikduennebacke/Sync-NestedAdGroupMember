@@ -12,6 +12,17 @@
     This means missing members are added and obsolete members are removed.
     Manual changes to the -UNNESTED group are overwritten.
 
+    .LINK
+    https://github.com/dominikduennebacke/Sync-NestedAdGroupMember
+
+    .NOTES
+    - Version: 0.9.0
+    - License: GPL-3.0
+    - Author:   Dominik Dünnebacke
+        - Email:    dominik@duennebacke.com
+        - GitHub:   https://github.com/dominikduennebacke
+        - LinkedIn: https://www.linkedin.com/in/dominikduennebacke/
+
     .INPUTS
     Hashtable
     A hashtable is received by the LegacyPair parameter.
@@ -20,18 +31,15 @@
     None or PSCustomObject
     Returns the nested group, unnested group, user and modification type as PSCustomObject if the PassThru parameter is specified. By default, this cmdlet does not generate any output.
 
-    .LINK
-    https://github.com/dominikduennebacke/Sync-NestedAdGroupMember
-
     .EXAMPLE
     Syncs all pairs and provides output.
 
-    Sync-NestedAdGroupMember -VERBOSE
+    .\Sync-NestedAdGroupMember.ps1 -VERBOSE
 
     VERBOSE: Checking dependencies
     VERBOSE: The secure channel between the local computer and the domain is in good condition.
     VERBOSE: Fetching NESTED AD groups
-    VERBOSE: Syncing group members recursively from NESTED group to UNNESTED group
+    VERBOSE: Syncing group members recursively from NESTED group(s) to UNNESTED group(s)
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -40,12 +48,12 @@
     .EXAMPLE
     Syncs all pairs and provides output. Two additional group pairs that are outside the naming convention are considered provided by the LegacyPair parameter.
 
-    Sync-NestedAdGroupMember -LegacyPair @{"app-dummy-access-NESTED" = "legacyapp1-access"; "app-dummy-access-NESTED" = "legacyapp2-access";} -VERBOSE
+    .\Sync-NestedAdGroupMember.ps1 -LegacyPair @{"app-dummy-access-NESTED" = "legacyapp1-access"; "app-dummy-access-NESTED" = "legacyapp2-access";} -VERBOSE
 
     VERBOSE: Checking dependencies
     VERBOSE: The secure channel between the local computer and the domain is in good condition.
     VERBOSE: Fetching NESTED AD groups
-    VERBOSE: Syncing group members recursively from NESTED group to UNNESTED group
+    VERBOSE: Syncing group members recursively from NESTED group(s) to UNNESTED group(s)
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -62,7 +70,7 @@
     .EXAMPLE
     Provides output of sync changes but does not actually perform them.
 
-    Sync-NestedAdGroupMember -WhatIf:$true
+    .\Sync-NestedAdGroupMember.ps1 -WhatIf:$true
 
     What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
     What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -71,12 +79,12 @@
     .EXAMPLE
     Provides output of sync changes but does not actually perform them, with additional output.
 
-    Sync-NestedAdGroupMember -WhatIf:$true -VERBOSE
+    .\Sync-NestedAdGroupMember.ps1 -WhatIf:$true -VERBOSE
 
     VERBOSE: Checking dependencies
     VERBOSE: The secure channel between the local computer and the domain is in good condition.
     VERBOSE: Fetching NESTED AD groups
-    VERBOSE: Syncing group members recursively from NESTED group to UNNESTED group
+    VERBOSE: Syncing group members recursively from NESTED group(s) to UNNESTED group(s)
     VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED
     What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
     What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -85,15 +93,7 @@
     .EXAMPLE
     Only consideres the OU "OU=groups,DC=contoso,DC=com" looking for group pairs. This can speed up execution.
 
-    Sync-NestedAdGroupMember -SearchBase "OU=groups,DC=contoso,DC=com"
-
-    .NOTES
-    - Version: 0.9.0
-    - License: GPL-3.0
-    - Author:   Dominik Dünnebacke
-        - Email:    dominik@duennebacke.com
-        - GitHub:   https://github.com/dominikduennebacke
-        - LinkedIn: https://www.linkedin.com/in/dominikduennebacke/
+    .\Sync-NestedAdGroupMember.ps1 -SearchBase "OU=groups,DC=contoso,DC=com"
 #>
 
 

@@ -5,7 +5,7 @@ Fetches members of AD groups with name suffix `-NESTED` recursively and syncs th
 
 ## SYNTAX
 ```powershell
-Sync-NestedAdGroupMember [-SearchBase <String>] [-LegacyPair <Hashtable>] [-Server <String>] [-WhatIf] [-PassThru] [-VERBOSE]
+.\Sync-NestedAdGroupMember.ps1 [-SearchBase <String>] [-LegacyPair <Hashtable>] [-Server <String>] [-WhatIf] [-PassThru] [-VERBOSE]
 ```
 
 ## DESCRIPTION
@@ -24,7 +24,7 @@ There are many applications that do not support nested group membership of users
 ### INSTALLATION
 * Download the script file:
     ```powershell
-    Invoke-WebRequest -Uri "https://github.com/dominikduennebacke/Sync-NestedAdGroupMember/raw/main/Sync-NestedAdGroupMember.ps1"
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dominikduennebacke/Sync-NestedAdGroupMember/main/Sync-NestedAdGroupMember.ps1"
     ```
 * Set up a scheduled task or a CI/CD job that runs the script every 10 minutes
 
@@ -36,13 +36,13 @@ After setting up a few group pairs keep an eye on the execution time of the scri
 ### EXAMPLE 1
 Syncs all pairs and provides output.
 ```powershell
-Sync-NestedAdGroupMember -VERBOSE
+.\Sync-NestedAdGroupMember.ps1 -VERBOSE
 ```
 ```
 VERBOSE: Checking dependencies
 VERBOSE: The secure channel between the local computer and the domain is in good condition.
 VERBOSE: Fetching NESTED AD groups
-VERBOSE: Syncing group members recursively from NESTED group to UNNESTED group
+VERBOSE: Syncing group members recursively from NESTED group(s) to UNNESTED group(s)
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -52,13 +52,13 @@ VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (-) tom.tonkins
 ### EXAMPLE 2
 Syncs all pairs and provides output. Two additional group pairs that are outside the naming convention are considered provided by the `LegacyPair` parameter.
 ```powershell
-Sync-NestedAdGroupMember -LegacyPair @{"app-dummy-access-NESTED" = "legacyapp1-access"; "app-dummy-access-NESTED" = "legacyapp2-access";} -VERBOSE
+.\Sync-NestedAdGroupMember.ps1 -LegacyPair @{"app-dummy-access-NESTED" = "legacyapp1-access"; "app-dummy-access-NESTED" = "legacyapp2-access";} -VERBOSE
 ```
 ```
 VERBOSE: Checking dependencies
 VERBOSE: The secure channel between the local computer and the domain is in good condition.
 VERBOSE: Fetching NESTED AD groups
-VERBOSE: Syncing group members recursively from NESTED group to UNNESTED group
+VERBOSE: Syncing group members recursively from NESTED group(s) to UNNESTED group(s)
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -76,7 +76,7 @@ VERBOSE: app-dummy-access-NESTED > legacyapp2-access: (+) tom.tonkins
 ### EXAMPLE 3
 Provides output of sync changes but does not actually perform them.
 ```powershell
-Sync-NestedAdGroupMember -WhatIf:$true
+.\Sync-NestedAdGroupMember.ps1 -WhatIf:$true
 ```
 ```
 What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
@@ -87,13 +87,13 @@ What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (-) tom.tonkins
 ### EXAMPLE 4
 Provides output of sync changes but does not actually perform them, with additional output.
 ```powershell
-Sync-NestedAdGroupMember -WhatIf:$true -VERBOSE
+.\Sync-NestedAdGroupMember.ps1 -WhatIf:$true -VERBOSE
 ```
 ```
 VERBOSE: Checking dependencies
 VERBOSE: The secure channel between the local computer and the domain is in good condition.
 VERBOSE: Fetching NESTED AD groups
-VERBOSE: Syncing group members recursively from NESTED group to UNNESTED group
+VERBOSE: Syncing group members recursively from NESTED group(s) to UNNESTED group(s)
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED
 What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) john.doe
 What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
@@ -103,7 +103,7 @@ What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (-) tom.tonkins
 ### EXAMPLE 5
 Only consideres the OU `"OU=groups,DC=contoso,DC=com"` looking for group pairs. This can speed up execution.
 ```powershell
-Sync-NestedAdGroupMember -SearchBase "OU=groups,DC=contoso,DC=com"
+.\Sync-NestedAdGroupMember.ps1 -SearchBase "OU=groups,DC=contoso,DC=com"
 ```
 
 ## PARAMETERS
@@ -199,4 +199,4 @@ Returns the name of the nested group, name of the unnested group, SamAccountName
 By default, this cmdlet does not generate any output.
 
 ## LINKS
-* [Blog post on autofocus.duennebacke.com]([./Add-ADPrincipalGroupMembership.md](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/))
+* [Blog post on autofocus.duennebacke.com]([./Add-ADPrincipalGroupMembership.md](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/)
