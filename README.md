@@ -1,39 +1,42 @@
 # Sync-NestedAdGroupMember
 
-## SYNOPSIS
+## Links
+* [Blog post on autofocus.duennebacke.com how to use this script](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/)
+
+## Synopsis
 Fetches members of AD groups with name suffix `-NESTED` recursively and syncs them to their `-UNNESTED` counterpart.
 
-## SYNTAX
+## Syntax
 ```powershell
 .\Sync-NestedAdGroupMember.ps1 [-SearchBase <String>] [-LegacyPair <Hashtable>] [-Server <String>] [-WhatIf] [-PassThru] [-VERBOSE]
 ```
 
-## DESCRIPTION
+## Description
 The Sync-NestedAdGroupMember.ps1 script syncs members between pairs of groups. A pair consists of two groups with an identical name followed by the suffix `-NESTED` for one group and `-UNNESTED` for the other, where the nested group is the source of truth for the members. You can theoretically create an infinite amount of those pairs in your Active Directory.
 
 During execution the script fetches all AD groups with suffix `-NESTED`, loops thru them and looks for their `-UNNESTED` counterpart. Then all members of the `-NESTED` group are fetched recursively and synced to the `-UNNESTED` group. This means missing members are added and obsolete members are removed. Manual changes to the `-UNNESTED` group are overwritten.
 
-### USE CASE
+### Use case
 There are many applications that do not support nested group membership of users breaking with common access management models. This script serves as a workaround. The idea is that the `-UNNESTED` group is configured within the application and access is managed entirely in the `-NESTED` group.
 
-### REQUIREMENTS
+### Requirements
 * PowerShell module [ActiveDirectory](https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps)
 * Execution on a domain-joined Windows machine that has an active connection to a domain controller
 * Execution by a user with permission to add/remove members in target AD groups
 
-### INSTALLATION
+### Installation
 * Download the script file:
     ```powershell
     Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dominikduennebacke/Sync-NestedAdGroupMember/main/Sync-NestedAdGroupMember.ps1" -OutFile "Sync-NestedAdGroupMember.ps1"
     ```
 * Set up a scheduled task or a CI/CD job that runs the script every 5-10 minutes
 
-### SCALING
+### Scaling
 After setting up a few group pairs keep an eye on the execution time of the script which should not be larger than the scheduling interval.
 
-## EXAMPLES
+## Examples
 
-### EXAMPLE 1
+### Example 1
 Syncs all pairs and provides output.
 ```powershell
 .\Sync-NestedAdGroupMember.ps1 -VERBOSE
@@ -49,7 +52,7 @@ VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
 VERBOSE: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (-) tom.tonkins
 ```
 
-### EXAMPLE 2
+### Example 2
 Syncs all pairs and provides output. Two additional group pairs that are outside the naming convention are considered provided by the `LegacyPair` parameter.
 ```powershell
 .\Sync-NestedAdGroupMember.ps1 -LegacyPair @{"app-dummy-access-NESTED" = "legacyapp1-access"; "app-dummy-access-NESTED" = "legacyapp2-access";} -VERBOSE
@@ -73,7 +76,7 @@ VERBOSE: app-dummy-access-NESTED > legacyapp2-access: (+) sam.smith
 VERBOSE: app-dummy-access-NESTED > legacyapp2-access: (+) tom.tonkins
 ```
 
-### EXAMPLE 3
+### Example 3
 Provides output of sync changes but does not actually perform them.
 ```powershell
 .\Sync-NestedAdGroupMember.ps1 -WhatIf:$true
@@ -84,7 +87,7 @@ What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
 What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (-) tom.tonkins
 ```
 
-### EXAMPLE 4
+### Example 4
 Provides output of sync changes but does not actually perform them, with additional output.
 ```powershell
 .\Sync-NestedAdGroupMember.ps1 -WhatIf:$true -VERBOSE
@@ -100,13 +103,13 @@ What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (+) sam.smith
 What if: app-dummy-access-NESTED > app-dummy-access-UNNESTED: (-) tom.tonkins
 ```
 
-### EXAMPLE 5
+### Example 5
 Only consideres the OU `"OU=groups,DC=contoso,DC=com"` looking for group pairs. This can speed up execution.
 ```powershell
 .\Sync-NestedAdGroupMember.ps1 -SearchBase "OU=groups,DC=contoso,DC=com"
 ```
 
-## PARAMETERS
+## Parameters
 
 ### -SearchBase
 Specifies an Active Directory path to search under.
@@ -197,6 +200,3 @@ A hashtable is received by the LegacyPair parameter.
 ### None or PSCustomObject
 Returns the name of the nested group, name of the unnested group, SamAccountName of the user and modification type (Add or Remove) as PSCustomObject if the PassThru parameter is specified.
 By default, this cmdlet does not generate any output.
-
-## LINKS
-* [Blog post on autofocus.duennebacke.com](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/)
