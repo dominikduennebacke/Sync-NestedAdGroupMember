@@ -1,8 +1,5 @@
 # Sync-NestedAdGroupMember
 
-## Links
-* [Blog post on autofocus.duennebacke.com how to use this script](https://autofocus.duennebacke.com/2022/10/09/nested-active-directory-group-support-for-legacy-apps/)
-
 ## Synopsis
 Fetches members of AD groups with name suffix `-NESTED` recursively and syncs them to their `-UNNESTED` counterpart.
 
